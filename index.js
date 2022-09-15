@@ -34,23 +34,19 @@ const questions = [
     message: "Select which team members you would like to include.",
     name: "next",
     choices: ["Engineer", "Intern", "Finish"],
-    when: (answer) => answer.members_choice === "Y",
   },
   {
     /// "Engineer" prompt user to enter the engineer's name, ID, email, and GitHub username; then take user back to the menu
     type: "input",
     message: "Engineer's GitHub:",
     name: "github",
-    when: (answer) => answer.members === "Engineer",
   },
   {
     /// "Intern" prompt user to enter the intern's name, ID, email, and school; then take user back to the menu
     type: "input",
     message: "Intern's school:",
     name: "school",
-    when: (answer) => answer.members === "Intern",
   },
-  {},
 ];
 
 inquirer.prompt(questions).then((response) => {
@@ -75,6 +71,8 @@ function addIntern(response) {
 //an HTMLinput file is generated that displays a nicely formatted team roster based on user input
 // a foreach  and team.map() inside the template literals
 
+team.forEach((teamMember) => team.map(teamMember).values(teamMember));
+
 function generatePage() {
   fs.writeFile(
     "team_roster.html",
@@ -90,26 +88,29 @@ function generatePage() {
       
     </head>
     
-    <body>
+    <body class="container justify-contents-center align-items-center">
     <header class = "text-bg-danger">
         <h1>My Team</h1>
-        </header>${team.map()}
-    <div class = "card text-center">
+        </header>${team.name}
+        <div class = "card">
+    <div class = "card-body text-center" style = "width: 18rem">
       <div class = "card-header bg-primary">
         <h1></h1>
-        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate"></i>${team.map()}</h1>
+        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate"></i>${team.next}</h1>
       </div>
       <ul class = "list-group list-group-flush align-items-center justify-content-center">
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map()}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map()}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map()}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map()}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map()}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.email}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.id}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.github}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.school}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.response}</li>
       </ul>
     </div>
     <div class = "card-body">
-        <a href="#" class = "card-link">${team.map()}</a>
-        <a href="#" class = "card-link">${team.map()}</a>
+        <a href="#" class = "card-link">${team.email}</a>
+        <a href="#" class = "card-link">${team.github}</a>
+        </div>
+        </div>
       <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script> </body>
     </html>`,
