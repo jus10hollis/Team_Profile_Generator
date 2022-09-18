@@ -1,13 +1,10 @@
-const Employee = require('./Employee')
-
-// Should this be somethine like:
-// class Engineer = new Employee
+const Employee = require("./Employee");
 
 class Engineer extends Employee {
-    constructor(name, id, email, github) {
-        super(name, id, email)
-        this.github = github
-    }
+  constructor(role, name, id, email, github) {
+    super(role, name, id, email);
+    this.github = github;
+  }
 }
 
 module.exports = Engineer;

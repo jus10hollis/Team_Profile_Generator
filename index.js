@@ -2,17 +2,23 @@ const fs = require("fs");
 const inquirer = require("inquirer");
 const jest = require("jest");
 const Employee = require("./Employee");
+const Manager = require("./Manager");
 const Engineer = require("./Engineer");
 const Intern = require("./Intern");
-let team = [];
 
 //prompts to enter the team manager’s name, employee ID, email address, and office number
 // need an array of job titles/roles for the HTML ["Manager", "Intern", "Engineer"]
 const questions = [
   {
     type: "input",
-    message: "What is the team manager's name",
+    message: "What is the employee's name",
     name: "name",
+  },
+  {
+    type: "list",
+    message: "What is the employee's role",
+    name: "role",
+    choices: ["Manager", "Engineer", "Intern"],
   },
   {
     type: "input",
@@ -30,13 +36,18 @@ const questions = [
     name: "officeNumber",
   },
   {
+    type: "confirm",
+    message: "Would you like to add team members?",
+    name: "add",
+  },
+  {
     type: "checkbox",
     message: "Select which team members you would like to include.",
     name: "next",
     choices: ["Engineer", "Intern", "Finish"],
   },
+  /// "Engineer" prompt user to enter the engineer's name, ID, email, and GitHub username; then take user back to the menu
   {
-    /// "Engineer" prompt user to enter the engineer's name, ID, email, and GitHub username; then take user back to the menu
     type: "input",
     message: "Engineer's GitHub:",
     name: "github",
@@ -48,9 +59,20 @@ const questions = [
     name: "school",
   },
 ];
-
+let team = [];
 inquirer.prompt(questions).then((response) => {
-  if (response.next === "Engineer") {
+  function addEngineer(response) {
+    const newEngineer = new Engineer({ name, email, id, github });
+    team.push(newEngineer);
+  }
+
+  function addIntern(response) {
+    const newIntern = new Intern({ name, email, id, school });
+    team.push(newIntern);
+  }
+  if (response.add !== "y") {
+    return generatePage();
+  } else if (response.next === "Engineer") {
     addEngineer(response);
   } else if (response.next === "Intern") {
     addIntern();
@@ -59,19 +81,8 @@ inquirer.prompt(questions).then((response) => {
   }
 });
 
-function addEngineer(response) {
-  const newEngineer = new Engineer({ name, email, id, github });
-  team.push(newEngineer);
-}
-
-function addIntern(response) {
-  const newIntern = new Intern({ name, email, id, school });
-  team.push(newIntern);
-}
 //an HTMLinput file is generated that displays a nicely formatted team roster based on user input
 // a foreach  and team.map() inside the template literals
-
-team.forEach((teamMember) => team.map(teamMember).values(teamMember));
 
 function generatePage() {
   fs.writeFile(
@@ -84,33 +95,37 @@ function generatePage() {
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
       <title>My Team</title>
       
     </head>
     
-    <body class="container justify-contents-center align-items-center">
-    <header class = "text-bg-danger">
-        <h1>My Team</h1>
-        </header>${team.name}
-        <div class = "card">
-    <div class = "card-body text-center" style = "width: 18rem">
-      <div class = "card-header bg-primary">
-        <h1></h1>
-        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate"></i>${team.next}</h1>
+    <body class="container-fluid align-items-center text-center">
+    <header class = "jumbotron m-5">
+        <h1>My Team</h1></header>
+      <main class = "col">
+      <section class ="row">
+        <div class = "card border border-dark rounded">
+    <div class = "card-body">
+      <div class = "card-header">
+        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">${Employee.name}</i></br>${Employee.role}</h1>
       </div>
       <ul class = "list-group list-group-flush align-items-center justify-content-center">
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.email}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.id}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.github}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.school}</li>
-        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.response}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${Employee.email}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${Employee.id}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${Engineer.github}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${Intern.school}</li>
+        <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${Manager.officeNumber}</li>
       </ul>
     </div>
     <div class = "card-body">
-        <a href="#" class = "card-link">${team.email}</a>
-        <a href="#" class = "card-link">${team.github}</a>
+        <a href="#" class = "card-link">${Employee.email}</a>
+        <a href="#" class = "card-link">${Employee.github}</a>
         </div>
         </div>
+        </section>
+        </main>
+        </body>
       <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script> </body>
     </html>`,
@@ -119,4 +134,5 @@ function generatePage() {
   );
 }
 
+module.exports = jest;
 //an HTMLinput file is generated that displays a nicely formatted team roster based on user
