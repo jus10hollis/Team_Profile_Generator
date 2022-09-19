@@ -134,31 +134,37 @@ function init() {
                   <div class = "card-header">
                         <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">${team.map(
                           (employee) =>
-                            `<div class="card"><h1>${employee.name}</h1><h2>${employee.role}</h2></div>`
+                            `<div class="card">
+                              <h1>${employee.name}</h1>
+                              <h2>${employee.role}</h2>
+                            </div>`
                         )}
                   </div>
                 <ul class = "list-group list-group-flush align-items-center justify-content-center">
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
-                    team.map(
-                      (employee) => employee.email
-                  }</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
-                    response.id
-                  }</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
-                    response.github
-                  }</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
-                    response.school
-                  }</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
-                    response.officeNumber
-                  }</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map(
+                    (employee) => employee.email
+                  )}</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map(
+                    (employee) => employee.id
+                  )}</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map(
+                    (employee) => employee.github
+                  )}</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map(
+                    (employee) => employee.school
+                  )}</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${team.map(
+                    (employee) => employee.officeNumber
+                  )}</li>
                 </ul>
               </div>
               <div class = "card-body">
-                  <a href="#" class = "card-link">${response.email}</a>
-                  <a href="#" class = "card-link">${response.github}</a>
+                  <a href="#" class = "card-link">${team.map(
+                    (employee) => employee.email
+                  )}</a>
+                  <a href="#" class = "card-link">${team.map(
+                    (employee) => employee.github
+                  )}</a>
               </div>
           </div>
             </section>
