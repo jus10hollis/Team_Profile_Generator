@@ -63,8 +63,20 @@ let team = [];
 
 function init() {
   inquirer.prompt(questions).then((response) => {
+    function addManager(response) {
+      const newManager = new Manager(
+        response.role,
+        response.name,
+        response.email,
+        response.id,
+        response.officeNumber
+      );
+      team.push(newManager);
+      init();
+    }
     function addEngineer(response) {
       const newEngineer = new Engineer(
+        response.role,
         response.name,
         response.email,
         response.id,
@@ -76,6 +88,7 @@ function init() {
 
     function addIntern(response) {
       const newIntern = new Intern(
+        response.role,
         response.name,
         response.email,
         response.id,
@@ -119,14 +132,28 @@ function init() {
           <div class = "card w-25 border border-dark rounded">
               <div class = "card-body">
                   <div class = "card-header">
-                        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">${response.name}</i></br>${response.role}</h1>
+                        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">${team.map(
+                          (employee) =>
+                            `<div class="card"><h1>${employee.name}</h1><h2>${employee.role}</h2></div>`
+                        )}
                   </div>
                 <ul class = "list-group list-group-flush align-items-center justify-content-center">
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${response.email}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${response.id}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${response.github}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${response.school}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${response.officeNumber}</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
+                    team.map(
+                      (employee) => employee.email
+                  }</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
+                    response.id
+                  }</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
+                    response.github
+                  }</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
+                    response.school
+                  }</li>
+                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${
+                    response.officeNumber
+                  }</li>
                 </ul>
               </div>
               <div class = "card-body">
