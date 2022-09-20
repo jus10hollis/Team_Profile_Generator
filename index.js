@@ -107,10 +107,34 @@ function init() {
       generatePage();
     }
   });
-  function generatePage(response) {
-    fs.writeFile(
-      "team_roster.html",
-      `<!DOCTYPE html>
+}
+
+let teamMap = team.map((employee) => {
+  `<div class = "card w-25 border border-dark rounded">
+      <div class = "card-body">
+          <div class = "card-header">
+                <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">
+                          )}
+          </div>
+        <ul class = "list-group list-group-flush align-items-center justify-content-center">
+          <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.email}</li>
+          <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.id}</li>
+          <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.github}</li>
+          <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.school}</li>
+          <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.officeNumber}</li>
+        </ul>
+      </div>
+      <div class = "card-body">
+          <a href="#" class = "card-link">${employee.email}</a>
+          <a href="#" class = "card-link">${employee.github}</a>
+      </div>
+  </div>`;
+});
+
+function generatePage(response) {
+  fs.writeFile(
+    "team_roster.html",
+    `<!DOCTYPE html>
       <html class="no-js" lang="en">
       
       <head>
@@ -129,37 +153,15 @@ function init() {
       </header>
       <main class = "col">
         <section class ="row">
-        ${team.map(
-          function(employee) { `<div class = "card w-25 border border-dark rounded">
-              <div class = "card-body">
-                  <div class = "card-header">
-                        <h1><i class="fa-solid fa-mug-hot fa-glasses fa-user-graduate">
-                                  )}
-                  </div>
-                <ul class = "list-group list-group-flush align-items-center justify-content-center">
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.email}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.id}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.github}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.school}</li>
-                  <li class = "card g-col-2 shadow p-3 mb-5 bg-body rounded">${employee.officeNumber}</li>
-                </ul>
-              </div>
-              <div class = "card-body">
-                  <a href="#" class = "card-link">${employee.email}</a>
-                  <a href="#" class = "card-link">${employee.github}</a>
-              </div>
-          </div>`
-          })}
-            </section>
+            ${teamMap}</section>
             </main>
           </body>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script> </body>
       </html>`,
-      (err) =>
-        err ? console.error(err) : console.log("The html has been created!")
-    );
-  }
+    (err) =>
+      err ? console.error(err) : console.log("The html has been created!")
+  );
 }
 
 //an HTMLinput file is generated that displays a nicely formatted team roster based on user input
